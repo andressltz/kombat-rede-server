@@ -22,7 +22,7 @@ public class GameServer {
                 client.communicate();
                 client.start();
 
-                System.out.println("Novo cliente conectado.");
+                System.out.println("Novo cliente conectado - " + client.getClientName());
                 clients.add(client);
                 System.out.println("Quantidade de clientes: " + clients.size());
             }
