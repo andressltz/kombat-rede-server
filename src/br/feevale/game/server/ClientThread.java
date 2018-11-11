@@ -11,17 +11,21 @@ public class ClientThread extends Thread {
     private Socket connectedSocket;
     private BufferedReader reader;
     private PrintWriter print;
+    private String clientAddress;
     private String clientName;
 
-    public ClientThread(Socket socket) {
-        connectedSocket = socket;
-        clientName = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
+    public ClientThread(Socket socket, String clientName) {
+        this.connectedSocket = socket;
+        this.clientAddress = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
+        this.clientName = clientName;
     }
 
     public void communicate() {
         try {
             reader = new BufferedReader(new InputStreamReader(connectedSocket.getInputStream()));
             print = new PrintWriter(connectedSocket.getOutputStream());
+            print.println("name:" + clientName);
+            print.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,6 +57,10 @@ public class ClientThread extends Thread {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String getClientAddress() {
+        return clientAddress;
     }
 
     public String getClientName() {
