@@ -36,12 +36,12 @@ public class ClientThread extends Thread {
         String key;
         while ((key = receive()) != null) {
             PrintWriter printWriter = null;
-            System.out.println("Pressionado a tecla " + key);
+            System.out.println(clientName + " Pressionado a tecla " + key);
             for (ClientThread client : GameServer.clients) {
                 try {
                     System.out.println("Avisando o cliente " + client.getClientName() + " tecla " + key);
                     printWriter = new PrintWriter(client.connectedSocket.getOutputStream());
-                    printWriter.println(key);
+                    printWriter.println(clientName + ":" + key);
                     printWriter.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
