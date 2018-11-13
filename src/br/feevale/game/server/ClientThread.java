@@ -14,6 +14,7 @@ public class ClientThread extends Thread {
     private String clientAddress;
     private String clientName;
 
+
     public ClientThread(Socket socket, String clientName) {
         this.connectedSocket = socket;
         this.clientAddress = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
@@ -24,7 +25,7 @@ public class ClientThread extends Thread {
         try {
             reader = new BufferedReader(new InputStreamReader(connectedSocket.getInputStream()));
             print = new PrintWriter(connectedSocket.getOutputStream());
-            print.println("name:" + clientName);
+            print.println(GameServer.contextGame);
             print.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,22 +34,25 @@ public class ClientThread extends Thread {
 
     @Override
     public void run() {
-        String key;
-        while ((key = receive()) != null) {
+        String command;
+        while ((command = receive()) != null) {
             PrintWriter printWriter = null;
-            System.out.println(clientName + " Pressionado a tecla " + key);
+            System.out.println(clientName + " Pressionado a tecla " + command);
+            GameServer.contextGame.updateContext(clientName, command);
             for (ClientThread client : GameServer.clients) {
                 try {
-                    System.out.println("Avisando o cliente " + client.getClientName() + " tecla " + key);
+//                    System.out.println("Avisando o cliente " + client.getClientName() + " tecla " + command);
                     printWriter = new PrintWriter(client.connectedSocket.getOutputStream());
-                    printWriter.println(clientName + ":" + key);
+                    printWriter.println(GameServer.contextGame);
                     printWriter.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println(GameServer.contextGame.toString());
         }
     }
+
 
     private String receive() {
         try {
