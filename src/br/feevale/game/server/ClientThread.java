@@ -37,11 +37,10 @@ public class ClientThread extends Thread {
         String command;
         while ((command = receive()) != null) {
             PrintWriter printWriter = null;
-            System.out.println(clientName + " Pressionado a tecla " + command);
+            System.out.println("Cliente: " + clientName + " Tecla: " + command);
             GameServer.contextGame.updateContext(clientName, command);
             for (ClientThread client : GameServer.clients) {
                 try {
-//                    System.out.println("Avisando o cliente " + client.getClientName() + " tecla " + command);
                     printWriter = new PrintWriter(client.connectedSocket.getOutputStream());
                     printWriter.println(GameServer.contextGame);
                     printWriter.flush();

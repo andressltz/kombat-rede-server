@@ -10,6 +10,7 @@ public class ContextPlayer {
     private int y = 0;
     private String playerName;
     private int points = 0;
+    private int state = 0; // 0 - normal 1 - attack
 
     public int getX() {
         return x;
@@ -41,6 +42,7 @@ public class ContextPlayer {
 //    }
 
     public void updatePlayer(String command) {
+        state = 0;
         if ("keyReleased".equals(command)) {
 
         } else if (isKeyPressDown(Integer.valueOf(command))) {
@@ -51,12 +53,14 @@ public class ContextPlayer {
             x -= SPEED;
         } else if (isKeyPressRight(Integer.valueOf(command))) {
             x += SPEED;
+        } else if (isKeyPressSpaceBar(Integer.valueOf(command))) {
+            state = 1;
         }
     }
 
     @Override
     public String toString() {
-        return "" + playerName + "," + x + "," + y + "";
+        return "" + playerName + "," + x + "," + y + "," + points + "," + state + "";
     }
 
     private boolean isKeyPressUp(int keyCode) {
@@ -73,6 +77,10 @@ public class ContextPlayer {
 
     private boolean isKeyPressRight(int keyCode) {
         return keyCode == KeyEvent.VK_RIGHT;
+    }
+
+    private boolean isKeyPressSpaceBar(int keyCode) {
+        return keyCode == KeyEvent.VK_SPACE;
     }
 
     public int getPoints() {
