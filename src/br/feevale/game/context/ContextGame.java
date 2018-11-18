@@ -1,5 +1,6 @@
 package br.feevale.game.context;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class ContextGame {
             // TODO: aqui podia ser um hashmap
             if (player.getPlayerName().equals(clientName)) {
                 player.updatePlayer(command);
+                if (Integer.valueOf(command) == KeyEvent.VK_SPACE) {
+
+                }
                 break;
             }
         }

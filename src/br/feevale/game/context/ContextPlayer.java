@@ -55,6 +55,7 @@ public class ContextPlayer {
             x += SPEED;
         } else if (isKeyPressSpaceBar(Integer.valueOf(command))) {
             state = 1;
+            points ++;
         }
     }
 
