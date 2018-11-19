@@ -10,7 +10,7 @@ public class ContextPlayer {
     private int y = 0;
     private String playerName;
     private int points = 0;
-    private int state = 0; // 0 - normal 1 - attack
+    private State state = State.NORMAL_RIGHT;
 
     public int getX() {
         return x;
@@ -42,26 +42,45 @@ public class ContextPlayer {
 //    }
 
     public void updatePlayer(String command) {
-        state = 0;
-        if ("keyReleased".equals(command)) {
-
+        if ("attacked".equals(command)) {
+            if (state == State.ATTACK_RIGHT || state == State.NORMAL_RIGHT) {
+                state = State.ATTACKED_RIGHT;
+            } else if (state == State.ATTACK_LEFT || state == State.NORMAL_LEFT) {
+                state = State.ATTACKED_LEFT;
+            }
         } else if (isKeyPressDown(Integer.valueOf(command))) {
+            if (state == State.ATTACK_RIGHT || state == State.ATTACKED_RIGHT) {
+                state = State.NORMAL_RIGHT;
+            } else if (state == State.ATTACK_LEFT || state == State.ATTACKED_LEFT) {
+                state = State.NORMAL_LEFT;
+            }
             y += SPEED;
         } else if (isKeyPressUp(Integer.valueOf(command))) {
+            if (state == State.ATTACK_RIGHT || state == State.ATTACKED_RIGHT) {
+                state = State.NORMAL_RIGHT;
+            } else if (state == State.ATTACK_LEFT || state == State.ATTACKED_LEFT) {
+                state = State.NORMAL_LEFT;
+            }
             y -= SPEED;
         } else if (isKeyPressLeft(Integer.valueOf(command))) {
+            state = State.NORMAL_LEFT;
             x -= SPEED;
         } else if (isKeyPressRight(Integer.valueOf(command))) {
+            state = State.NORMAL_RIGHT;
             x += SPEED;
         } else if (isKeyPressSpaceBar(Integer.valueOf(command))) {
-            state = 1;
-            points ++;
+            if (state == State.NORMAL_RIGHT || state == State.ATTACKED_RIGHT) {
+                state = State.ATTACK_RIGHT;
+            } else if (state == State.NORMAL_LEFT || state == State.ATTACKED_LEFT) {
+                state = State.ATTACK_LEFT;
+            }
+            points++;
         }
     }
 
     @Override
     public String toString() {
-        return "" + playerName + "," + x + "," + y + "," + points + "," + state + "";
+        return "" + playerName + "," + x + "," + y + "," + points + "," + state.getState() + "";
     }
 
     private boolean isKeyPressUp(int keyCode) {
@@ -90,5 +109,9 @@ public class ContextPlayer {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public State getState() {
+        return state;
     }
 }

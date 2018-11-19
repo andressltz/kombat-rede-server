@@ -48,7 +48,7 @@ public class ClientThread extends Thread {
                     e.printStackTrace();
                 }
             }
-            System.out.println(GameServer.contextGame.toString());
+//            System.out.println(GameServer.contextGame.toString());
         }
     }
 
